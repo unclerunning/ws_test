@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 const Heartbeat = require('./heartbeat');
 
-ws = new WebSocket('ws://172.31.102.155:3000', {
+ws = new WebSocket('ws://192.168.1.21:3000', {
   rejectUnauthorized: false
 });
 
