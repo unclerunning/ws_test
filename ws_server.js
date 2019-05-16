@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+const Heartbeat = require('./heartbeat');
 
 const wss = new WebSocket.Server({
   port: 3000
@@ -6,21 +7,8 @@ const wss = new WebSocket.Server({
 
 wss.on('connection', (ws, request) => {
 
-  ws.isAlive = true;
-  ws.on('pong', _ => {
-    console.log('onpong');
-    ws.isAlive = true;
+  Heartbeat.addHeartbeat(ws, 30000, (time) => {
+    console.log(`socket lost, time: ${time}s`);
   });
 
-  const interval = setInterval(function ping() {
-    if (ws.isAlive === false) {
-      console.log(`socket : timeout.`);
-      ws.terminate();
-      return
-    }
-
-    ws.isAlive = false;
-    console.log('ping');
-    ws.ping();
-  }, 30000); // 30s
 });
