@@ -16,8 +16,8 @@ ws.onclose = (e) => {
 ws.on("open", () => {
   console.log('onopen');
 
-  Heartbeat.addHeartbeat(ws, 30000, () => {
-    console.log('socket lost');
+  Heartbeat.addHeartbeat(ws, 30000, (time) => {
+    console.log(`socket lost, time: ${time}s`);
   });
 
 });

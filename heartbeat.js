@@ -1,6 +1,7 @@
 function noop() {}
 
 // It seems like ws will close the socket after 20s timeout.
+// maybe caused by some proxy...
 function makeTimeCallback(beat, cb) {
     if (cb && typeof cb === 'function') {
         cb((beat.dieTime - beat.pingTime) / 1000);
@@ -27,6 +28,7 @@ function addHeartbeat(ws, timeoute = 30000, timeCallback = null) {
 
         if (beat.waitPong === true) {
             beat.dieTime = (new Date()).getTime();
+            console.log('terminate');
             ws.terminate();
             clearInterval(interval);
             interval = null;
@@ -52,6 +54,11 @@ function addHeartbeat(ws, timeoute = 30000, timeCallback = null) {
 
         if (!beat.dieTime) {
             beat.dieTime = (new Date()).getTime();
+        }
+
+        const now =  (new Date()).getTime();
+        if(now > beat.dieTime) {
+            beat.dieTime = now;
         }
 
         makeTimeCallback(beat, timeCallback);
