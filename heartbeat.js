@@ -9,7 +9,7 @@ function makeTimeCallback(beat, cb) {
 
 function addHeartbeat(ws, timeoute = 30000, timeCallback = null) {
 
-    if (ws.readyState !== ws.OPEN()) {
+    if (ws.readyState !== ws.OPEN) {
         return;
     }
 
